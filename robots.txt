@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://diapason.com.br/sitemap.xml
