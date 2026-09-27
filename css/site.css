@@ -776,6 +776,16 @@ font-family: var(--font-display); font-weight: 700; font-size: clamp(1.35rem, 5v
 .mega .mega__menores a:not(.btn) { display: inline-block; border: 0; padding: 10px 0; font-family: var(--font-body); font-weight: 400; font-size: 1.02rem; color: var(--on-dark-soft); text-decoration: none; }
 .secao.papel + .secao.papel, .secao.creme2 + .secao.creme2 { padding-top: 0; }
 .campo select { min-height: 48px; }
+@media (min-width: 1100px) {
+.filmes--3 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.filmes--3 > * { grid-column: span 2; }
+.filmes--3 > :last-child:nth-child(3n+1) { grid-column: 3 / span 2; }
+.filmes--3 > :nth-last-child(2):nth-child(3n+1) { grid-column: 2 / span 2; }
+}
+@media (min-width: 760px) and (max-width: 1099px) {
+.filmes:not(.filmes--3) > :last-child:nth-child(odd), .filmes--3 > :last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 12px); }
+}
+.filmes:has(> .filme:only-child), .filmes:has(> div:only-child) { justify-content: center; }
 .hero--curto { min-height: auto; }
 .hero--curto .hero__conteudo { padding-top: clamp(130px, 16vw, 190px); padding-bottom: clamp(56px, 7vw, 96px); }
 .hero--curto .hero__video img { opacity: .32; filter: blur(14px) saturate(.85); transform: scale(1.08); }
