@@ -64,7 +64,10 @@
 
   /* ---------------- vídeos em loop ---------------- */
   const teste = doc.createElement("video");
-  const temAV1 = !!teste.canPlayType && teste.canPlayType('video/webm; codecs="av01.0.08M.08"') !== "";
+  // o Safari não decodifica o contêiner WebM de jeito nenhum; exigir os dois testes evita que uma resposta
+  // errada só pro codec AV1 mande um .webm pra um navegador que nunca vai conseguir abrir o arquivo (29/09)
+  const temWebm = !!teste.canPlayType && teste.canPlayType('video/webm') !== "";
+  const temAV1 = temWebm && teste.canPlayType('video/webm; codecs="av01.0.08M.08"') !== "";
   const emPe = () => matchMedia("(orientation: portrait) and (max-width: 900px)").matches;
   const pequeno = () => Math.min(innerWidth, screen.width || innerWidth) < 900;
 
@@ -81,13 +84,43 @@
     const src = escolher(v);
     if (!src) return;
     v.dataset.carregado = "1";
+    v.muted = true; // Safari/iOS às vezes ignora o atributo HTML se a propriedade não for setada também
     v.src = src;
+    v.load(); // iOS precisa desse empurrão depois de trocar o src de um <video preload="none">
     v.addEventListener("playing", () => v.classList.add("tocando"), { once: true });
+    // rede de segurança: se o arquivo escolhido (webm/av1) não decodificar nesse navegador por
+    // algum motivo, troca pro mp4 equivalente em vez de deixar o card travado no pôster (29/09)
+    v.addEventListener("error", () => {
+      const d = v.dataset;
+      const mp4 = (emPe() && d.v && d.v.endsWith(".mp4") && d.v) || d.mp4Sm || d.mp4;
+      if (mp4 && v.src.indexOf(mp4) === -1) { v.src = mp4; v.load(); if (!pausado) tocar(v); }
+    }, { once: true });
   };
 
   let pausado = false;
   try { pausado = localStorage.getItem("diapason-movimento") === "pausado"; } catch (_) { /* sem armazenamento */ }
-  const tocar = (v) => { if (pausado) return; const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+  // no Safari/iOS, chamar play() antes do vídeo sinalizar que está pronto costuma ser recusado (às vezes
+  // sem nem rejeitar a promise); espera o canplay antes de tentar, e tenta de novo se ainda assim falhar,
+  // em vez de desistir e deixar o box travado no pôster pra sempre (Diego, 28-29/09)
+  const tocar = (v) => {
+    if (pausado) return;
+    if (v.readyState < 2) {
+      if (!v.dataset.aguardando) {
+        v.dataset.aguardando = "1";
+        v.addEventListener("canplay", () => { delete v.dataset.aguardando; if (!pausado) tocar(v); }, { once: true });
+      }
+      return;
+    }
+    try {
+      const p = v.play();
+      if (p && p.catch) p.catch(() => {
+        if (!v.dataset.retentando) {
+          v.dataset.retentando = "1";
+          v.addEventListener("canplay", () => { delete v.dataset.retentando; if (!pausado) tocar(v); }, { once: true });
+        }
+      });
+    } catch (_) { /* alguns navegadores lançam na hora em vez de rejeitar a promise */ }
+  };
 
   const loops = $$(".loop video");
   const visiveis = new Set();
@@ -104,10 +137,12 @@
     }, { rootMargin: "200px 0px" });
     loops.forEach((v) => {
       const loop = v.closest(".loop");
-      if (loop && loop.offsetParent === null) return;              // escondido (tríptico no celular)
-      if (pequeno() && !v.hasAttribute("data-prioridade")) return; // no celular, card fica no pôster
+      if (loop && loop.offsetParent === null) return; // escondido (tríptico no celular)
       if (v.hasAttribute("data-prioridade")) { carregar(v); tocar(v); }
       obs.observe(v);
+      // ao tirar o mouse do card e voltar, o vídeo tem que continuar rodando (o navegador às vezes pausa sozinho)
+      const card = v.closest(".filme, .servico, .espaco") || loop;
+      if (card) card.addEventListener("pointerenter", () => { if (visiveis.has(v)) tocar(v); });
     });
     doc.addEventListener("visibilitychange", () => {
       if (doc.hidden) loops.forEach((v) => v.pause());

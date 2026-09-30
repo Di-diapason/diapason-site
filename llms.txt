@@ -1,8 +1,8 @@
 # Diapason
 
-> Produtora audiovisual de eventos, filmes, transmissões ao vivo e estúdios. Desde 2011, de Rio Claro para o Brasil.
+> Produtora audiovisual de eventos, filmes, transmissões ao vivo e estúdios. Desde 2012, de Rio Claro para o Brasil.
 
-Produtora audiovisual brasileira fundada em 2011, com sede em Rio Claro (SP) e estúdios em Rio Claro e Ribeirão Pires (SP). Atende empresas, agências e eventos em todo o Brasil, e casamentos a partir de Rio Claro.
+Produtora audiovisual brasileira fundada em 2012, com sede em Rio Claro (SP) e estúdios em Rio Claro e Ribeirão Pires (SP). Atende empresas, agências e eventos em todo o Brasil, e casamentos a partir de Rio Claro.
 
 ## Serviços
 - [Eventos corporativos](https://diapason.com.br/eventos-corporativos/): Vídeo e foto, com Edição Expressa se o evento pedir.
@@ -27,13 +27,18 @@ Produtora audiovisual brasileira fundada em 2011, com sede em Rio Claro (SP) e e
 - [CFMOTO, Sorocaba embaixador](https://diapason.com.br/cases/cf-moto-sorocaba-embaixador/)
 - [Ponsse, 15 anos no Brasil](https://diapason.com.br/cases/ponsse-institucional/)
 - [Estúdio A, o filme](https://diapason.com.br/cases/diapason-estudio-a/)
+- [Juntos em Quadra, para a Pró Spin](https://diapason.com.br/cases/juntos-em-quadra-pro-spin/)
+- [Squadra, Genius AI](https://diapason.com.br/cases/squadra-genius-ai-animacao/)
+- [Alpop, Cupola Summit 2025](https://diapason.com.br/cases/alpop-cupola-summit-2025/)
 - [Camorim, Intermodal 2025](https://diapason.com.br/cases/camorim-intermodal-2025/)
 - [Prime Control Experience](https://diapason.com.br/cases/prime-control-experience/)
 - [Afya, Quem quer ser um aprovado](https://diapason.com.br/cases/afya-evento-corporativo/)
+- [Bunitta Pele, vídeo institucional](https://diapason.com.br/cases/bunitta-pele-institucional/)
 - [Davi, live session](https://diapason.com.br/cases/davi-live-session/)
 - [ExpoCannabis Brasil 2024, aftermovie](https://diapason.com.br/cases/expocannabis-brasil-2024/)
 - [Fusion Vitre, vídeo institucional](https://diapason.com.br/cases/fusion-vitre-institucional/)
 - [Grupo CBO, Fita Azul 2024](https://diapason.com.br/cases/cbo-fita-azul-2024/)
+- [Paysandu, case de tecnologia](https://diapason.com.br/cases/paysandu-ativy-digital/)
 - [TEDxCampinas Women 2024, aftermovie](https://diapason.com.br/cases/tedxcampinas-women-2024/)
 - [TEDxFACERES, aftermovie](https://diapason.com.br/cases/tedxfaceres/)
 - [TEDxPortoSeguroSchool, aftermovie](https://diapason.com.br/cases/tedxportoseguro-school/)
@@ -41,13 +46,9 @@ Produtora audiovisual brasileira fundada em 2011, com sede em Rio Claro (SP) e e
 - [YDUQS Day, vídeo de abertura](https://diapason.com.br/cases/yduqs-abertura-de-evento/)
 - [ABB Motion, convenção de vendas](https://diapason.com.br/cases/abb-evento-corporativo/)
 - [AGCO Power, vídeo institucional](https://diapason.com.br/cases/agco-power-institucional/)
+- [Agroceres, convenção comercial](https://diapason.com.br/cases/agroceres-convencao-comercial/)
+- [BEES, vídeo institucional](https://diapason.com.br/cases/bees-institucional/)
 - [Outros Futuros, no Sinal do Vale](https://diapason.com.br/cases/outros-futuros-sinal-do-vale/)
-- [Stone Partner Program, filme do ano](https://diapason.com.br/cases/stone-partner-program/)
-- [Wellbeing Summit São Paulo, aftermovie](https://diapason.com.br/cases/wellbeing-project-aftermovie/)
-- [Bloquim 2020, aftermovie](https://diapason.com.br/cases/bloquim-aftermovie/)
-- [Edson & Hudson nos 192 anos de Rio Claro](https://diapason.com.br/cases/edson-e-hudson-192-anos-rio-claro/)
-- [Interbatuc 2019, aftermovie](https://diapason.com.br/cases/interbatuc-aftermovie/)
-- [Sundiata, Mude o Agora](https://diapason.com.br/cases/sundiata-mude-o-agora/)
 
 ## Conteúdo
 - [Aftermovie: o que é, quanto tempo deve ter e como planejar o seu](https://diapason.com.br/conteudo/aftermovie-o-que-e/)
