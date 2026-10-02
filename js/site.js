@@ -408,3 +408,22 @@
 
   aplicarPausa();
 })();
+
+/* depoimentos em galeria: setas rolam um cartão por vez e apagam nas pontas */
+document.querySelectorAll('[data-galeria]').forEach(function (g) {
+  var trilho = g.querySelector('.depoimentos--galeria');
+  var setas = g.querySelectorAll('.depo-galeria__setas button');
+  if (!trilho || !setas.length) return;
+  function passo() { var c = trilho.querySelector('.depoimento'); return c ? c.getBoundingClientRect().width + 18 : trilho.clientWidth; }
+  function atualizar() {
+    var max = trilho.scrollWidth - trilho.clientWidth - 2;
+    setas[0].disabled = trilho.scrollLeft <= 2;
+    setas[1].disabled = trilho.scrollLeft >= max;
+  }
+  setas.forEach(function (b) {
+    b.addEventListener('click', function () { trilho.scrollBy({ left: passo() * Number(b.dataset.dir), behavior: 'smooth' }); });
+  });
+  trilho.addEventListener('scroll', atualizar, { passive: true });
+  window.addEventListener('resize', atualizar);
+  atualizar();
+});
