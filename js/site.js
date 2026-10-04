@@ -148,6 +148,26 @@
       if (doc.hidden) loops.forEach((v) => v.pause());
       else visiveis.forEach((v) => tocar(v));
     });
+    // "atualizei e travou" (Diego, 04/10): volta pelo cache do navegador (bfcache) chega com os vídeos parados,
+    // o modo economia do iPhone recusa o autoplay até o primeiro toque e, na rede ruim, o vídeo às vezes
+    // congela no meio sem disparar pause; os três casos voltam a tocar sozinhos
+    window.addEventListener("pageshow", (e) => { if (e.persisted) visiveis.forEach((v) => tocar(v)); });
+    const destravar = () => visiveis.forEach((v) => { if (v.paused) tocar(v); });
+    ["touchstart", "pointerdown", "scroll"].forEach((t) => window.addEventListener(t, destravar, { passive: true, once: true }));
+    const ultimo = new WeakMap();
+    setInterval(() => {
+      if (pausado || doc.hidden) return;
+      visiveis.forEach((v) => {
+        if (!v.dataset.carregado || v.ended) return;
+        const t = v.currentTime, antes = ultimo.get(v);
+        ultimo.set(v, t);
+        if (v.paused) { tocar(v); return; }
+        if (antes !== undefined && Math.abs(t - antes) < 0.01 && v.readyState >= 2) {
+          try { v.currentTime = t + 0.05; } catch (_) { /* sem seek */ }
+          tocar(v);
+        }
+      });
+    }, 3000);
   }
 
   // botão de pausa: para vídeos, faixa de logos e REC (WCAG 2.2.2)
