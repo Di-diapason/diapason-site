@@ -834,6 +834,18 @@ background: var(--paper); color: var(--text); box-shadow: inset 0 0 0 1px var(--
 .depoimentos--galeria .depoimento.aberto blockquote { -webkit-line-clamp: unset; display: block; }
 .depoimentos--galeria .depoimento blockquote::before { display: block; }
 .depoimento__mais { justify-self: start; margin-top: -10px; padding: 6px 0; border: 0; background: none; font: inherit; font-size: .88rem; font-weight: 700; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+@media (min-width: 960px) {
+.cabeca--lado.cabeca--frase { align-items: end; }
+.cabeca--lado.cabeca--frase > .pilha:first-child { position: static; }
+}
+.cabeca--frase .prosa { font-size: clamp(1.08rem, 1.35vw, 1.24rem); line-height: 1.6; max-width: 46ch; text-wrap: pretty; }
+.lead--linha { max-width: none; }
+.form__linha { align-items: end; }
+.campo input[type=date] { -webkit-appearance: none; appearance: none; display: block; min-height: 54px; line-height: 1.4; }
+.campo select { min-height: 54px; }
+.inteiro { white-space: nowrap; }
+#onde { max-width: none; font-size: clamp(1.5rem, 3.4vw, 3rem); }
+@media (max-width: 599px) { .lead br { display: none; } }
 .hero--curto { min-height: auto; }
 .hero--curto .hero__conteudo { padding-top: clamp(130px, 16vw, 190px); padding-bottom: clamp(56px, 7vw, 96px); }
 .hero--curto .hero__video img { opacity: .32; filter: blur(14px) saturate(.85); transform: scale(1.08); }
