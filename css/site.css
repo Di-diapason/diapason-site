@@ -747,7 +747,7 @@ html.menu-aberto .nav { background: var(--ink); -webkit-backdrop-filter: none; b
 }
 body::after {
 content: ""; position: fixed; inset: -64px; z-index: 2147483000; pointer-events: none;
-background: url("../img/grao.webp") 0 0 / 256px 256px repeat; mix-blend-mode: overlay; opacity: var(--grao, .17);
+background: url("../img/grao.webp?v=8c7927ac") 0 0 / 256px 256px repeat; mix-blend-mode: overlay; opacity: var(--grao, .17);
 }
 @media (min-resolution: 2dppx) { body::after { background-size: 128px 128px; } }
 @media (min-resolution: 3dppx) { body::after { background-size: 85.334px 85.334px; } }
