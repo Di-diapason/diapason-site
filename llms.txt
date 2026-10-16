@@ -9,12 +9,16 @@ Produtora audiovisual brasileira fundada em 2012, com sede em Rio Claro (SP) e e
 - [TEDx](https://diapason.com.br/tedx/): Palestras, transmissão e o filme do evento.
 - [Festas universitárias](https://diapason.com.br/festas-universitarias/): Aftermovie, fotos e vídeo do dia para a sua festa.
 - [Feiras e festivais](https://diapason.com.br/feiras-e-festivais/): O evento inteiro, com cobertura de estande.
-- [Transmissão ao vivo](https://diapason.com.br/transmissao-ao-vivo/): Multicâmera, para evento híbrido e webinar.
+- [Transmissão ao vivo](https://diapason.com.br/transmissao-ao-vivo/): Para evento híbrido e webinar, com tudo gravado.
 - [Filmes institucionais](https://diapason.com.br/filmes-institucionais/): A história da empresa com acabamento de cinema.
 - [Campanhas e publicidade](https://diapason.com.br/campanhas/): Filme publicitário com as versões de cada canal.
-- [Animação 2D e 3D](https://diapason.com.br/animacao/): Motion design para explicar o que é difícil de filmar.
-- [Podcast e videocast](https://diapason.com.br/podcast/): Estúdio próprio, multicâmera e cortes.
+- [Animação 2D e motion design](https://diapason.com.br/animacao/): Motion design para explicar o que é difícil de filmar.
+- [Podcast e videocast](https://diapason.com.br/podcast/): Dois estúdios, episódio completo e cortes para as redes.
 - [Redes sociais](https://diapason.com.br/redes-sociais/): Conteúdo mensal, storymaker e cortes verticais.
+- [Aftermovie](https://diapason.com.br/aftermovie/): O filme do evento, em até 2 minutos.
+- [Edição Expressa](https://diapason.com.br/edicao-expressa/): O vídeo do evento ainda no mesmo dia.
+- [Storymaker](https://diapason.com.br/storymaker/): Stories e vídeos verticais feitos durante o evento.
+- [Para agências](https://diapason.com.br/para-agencias/): Foto, vídeo, transmissão e Edição Expressa para o evento do cliente de vocês.
 - [Estúdios](https://diapason.com.br/estudios/): locação de estúdio de gravação, podcast e sala de cinema.
 - [Casamentos](https://diapason.com.br/casamentos/): filme de casamento, um filme Diapason.
 
@@ -26,8 +30,11 @@ Produtora audiovisual brasileira fundada em 2012, com sede em Rio Claro (SP) e e
 - [Tabu 2025, aftermovie](https://diapason.com.br/cases/tabu-2025-aftermovie/)
 - [CFMOTO, Sorocaba embaixador](https://diapason.com.br/cases/cf-moto-sorocaba-embaixador/)
 - [Ponsse, 15 anos no Brasil](https://diapason.com.br/cases/ponsse-institucional/)
+- [Arcadis, Toxicast Brazil](https://diapason.com.br/cases/arcadis-toxicast-brazil/)
+- [Camorim, Intermodal 2026](https://diapason.com.br/cases/camorim-intermodal-2026/)
 - [Estúdio A, o filme](https://diapason.com.br/cases/diapason-estudio-a/)
 - [Juntos em Quadra, para a Pró Spin](https://diapason.com.br/cases/juntos-em-quadra-pro-spin/)
+- [Squadra, Formatura New Thinkers 2026](https://diapason.com.br/cases/squadra-formatura-new-thinkers-2026/)
 - [Squadra, Genius AI](https://diapason.com.br/cases/squadra-genius-ai-animacao/)
 - [Alpop, Cupola Summit 2025](https://diapason.com.br/cases/alpop-cupola-summit-2025/)
 - [Camorim, Intermodal 2025](https://diapason.com.br/cases/camorim-intermodal-2025/)
@@ -40,15 +47,12 @@ Produtora audiovisual brasileira fundada em 2012, com sede em Rio Claro (SP) e e
 - [Grupo CBO, Fita Azul 2024](https://diapason.com.br/cases/cbo-fita-azul-2024/)
 - [Paysandu, case de tecnologia](https://diapason.com.br/cases/paysandu-ativy-digital/)
 - [TEDxCampinas Women 2024, aftermovie](https://diapason.com.br/cases/tedxcampinas-women-2024/)
-- [TEDxFACERES, aftermovie](https://diapason.com.br/cases/tedxfaceres/)
-- [TEDxPortoSeguroSchool, aftermovie](https://diapason.com.br/cases/tedxportoseguro-school/)
+- [TEDxFaceres, aftermovie](https://diapason.com.br/cases/tedxfaceres/)
+- [TEDxPorto Seguro School, aftermovie](https://diapason.com.br/cases/tedxportoseguro-school/)
 - [Tabu 2024, aftermovie](https://diapason.com.br/cases/tabu-2024-aftermovie/)
 - [YDUQS Day, vídeo de abertura](https://diapason.com.br/cases/yduqs-abertura-de-evento/)
 - [ABB Motion, convenção de vendas](https://diapason.com.br/cases/abb-evento-corporativo/)
-- [AGCO Power, vídeo institucional](https://diapason.com.br/cases/agco-power-institucional/)
-- [Mari Cerri, clipes](https://diapason.com.br/cases/mari-cerri-clipes/)
-- [Outros Futuros, no Sinal do Vale](https://diapason.com.br/cases/outros-futuros-sinal-do-vale/)
-- [Ponsse, Avaliação de Desempenho](https://diapason.com.br/cases/ponsse-avaliacao-desempenho/)
+- [AGCO Power, Concrete Show 2023](https://diapason.com.br/cases/agco-power-concrete-show-2023/)
 
 ## A Diapason
 - [Sobre](https://diapason.com.br/sobre/): história, jeito de trabalhar e estrutura.
