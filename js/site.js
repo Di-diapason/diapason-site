@@ -59,9 +59,29 @@ const pequeno = () => Math.min(innerWidth, screen.width || innerWidth) < 900;
 const escolher = (v) => {
 const d = v.dataset;
 const largura = (v.clientWidth || innerWidth) * (devicePixelRatio || 1);
-if (emPe() && (d.v || d.vAv1)) return (temAV1 && d.vAv1) || d.v;
+const emPeBox = !v.clientWidth || v.clientHeight > v.clientWidth;
+if (emPe() && emPeBox && (d.v || d.vAv1)) return (temAV1 && d.vAv1) || d.v;
 if ((pequeno() || largura <= 1300) && (d.av1Sm || d.mp4Sm)) return (temAV1 && d.av1Sm) || d.mp4Sm;
 return (temAV1 && d.av1) || d.mp4 || d.mp4Sm;
+};
+const enquadrar = (v) => {
+const trilha = v.dataset.trilha.split(",").map((s) => s.split(":").map(Number));
+let atual = -1;
+const aplicar = (t) => {
+const box = v.clientWidth / Math.max(1, v.clientHeight), vid = v.videoWidth ? v.videoWidth / v.videoHeight : 16 / 9;
+const emY = v.dataset.eixo === "y";
+if (emY ? box <= vid : box >= vid) { if (atual !== -1) { v.style.objectPosition = ""; atual = -1; } return; }
+let i = 0;
+for (let k = 0; k < trilha.length; k++) if (t + 0.02 >= trilha[k][0]) i = k;
+if (i !== atual) { atual = i; v.style.objectPosition = emY ? "50% " + trilha[i][1] + "%" : trilha[i][1] + "% 50%"; }
+};
+if ("requestVideoFrameCallback" in v) {
+const quadro = (_, m) => { aplicar(m.mediaTime); v.requestVideoFrameCallback(quadro); };
+v.requestVideoFrameCallback(quadro);
+} else {
+v.addEventListener("timeupdate", () => aplicar(v.currentTime));
+}
+aplicar(0);
 };
 const carregar = (v) => {
 if (v.dataset.carregado) return;
@@ -72,6 +92,7 @@ v.muted = true; // Safari/iOS às vezes ignora o atributo HTML se a propriedade 
 v.src = src;
 v.load(); // iOS precisa desse empurrão depois de trocar o src de um <video preload="none">
 v.addEventListener("playing", () => v.classList.add("tocando"), { once: true });
+if (v.dataset.trilha && src !== v.dataset.v && src !== v.dataset.vAv1) enquadrar(v);
 v.addEventListener("error", () => {
 const d = v.dataset;
 const mp4 = (emPe() && d.v && d.v.endsWith(".mp4") && d.v) || d.mp4Sm || d.mp4;

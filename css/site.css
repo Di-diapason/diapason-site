@@ -371,6 +371,11 @@ border-radius: var(--radius); overflow: hidden; color: var(--on-dark); text-deco
 background: var(--ink-2);
 }
 .servico .loop { position: absolute; inset: 0; z-index: -2; }
+.servico .loop img, .servico .loop video { object-position: var(--pos-x, 50%) var(--pos-y, 50%); }
+@media (max-width: 1039px) {
+.servico::after { content: ""; grid-area: 1 / 1; padding-top: 56.25%; pointer-events: none; }
+.servico > .servico__texto { grid-area: 1 / 1; align-self: end; }
+}
 .servico::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(8, 18, 19, .92) 0%, rgba(8, 18, 19, .7) 45%, rgba(8, 18, 19, .05) 80%); transition: opacity .4s; }
 .servico__texto { padding: 24px; display: grid; gap: 8px; }
 .servico__texto h3 { font-size: clamp(1.3rem, 2vw, 1.7rem); }
