@@ -679,6 +679,8 @@ p, li, dd, figcaption, summary, blockquote, .lead, .texto-suave { text-wrap: pre
 .entregas-lista span { grid-column: 1; grid-row: 1; align-self: baseline; font-family: var(--font-display); font-weight: 800; font-size: 2rem; line-height: 1; color: var(--amber); }
 .entregas-lista h3 { grid-column: 2; grid-row: 1; align-self: baseline; font-size: clamp(1.4rem, 2.6vw, 2.2rem); margin: 0; }
 .entregas-lista p { grid-column: 2; grid-row: 2; margin: 0; max-width: 62ch; color: var(--text-soft); }
+.entregas-lista h3 a { text-decoration: none; }
+.entregas-lista h3 a:hover { color: var(--accent); }
 .escuro .entregas-lista li { border-color: var(--line-dark); }
 .escuro .entregas-lista p { color: var(--on-dark-soft); }
 @media (max-width: 759px) { .entregas-lista li { grid-template-columns: 48px 1fr; } .entregas-lista span { font-size: 1.5rem; } }
