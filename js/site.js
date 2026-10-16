@@ -5,7 +5,7 @@ const $ = (s, el = doc) => el.querySelector(s);
 const $$ = (s, el = doc) => [...el.querySelectorAll(s)];
 const reduzir = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const conexao = navigator.connection || {};
-const economia = !!conexao.saveData || /(^|-)(2g|3g)$/.test(conexao.effectiveType || "") || (conexao.downlink > 0 && conexao.downlink < 1.5);
+const economia = !!conexao.saveData || /(^|-)(2g|3g)$/.test(conexao.effectiveType || "");
 const nav = $("[data-nav]");
 let ultimoY = scrollY;
 const aoRolar = () => {
@@ -126,13 +126,26 @@ else visiveis.forEach((v) => tocar(v));
 window.addEventListener("pageshow", (e) => { if (e.persisted) visiveis.forEach((v) => tocar(v)); });
 const destravar = () => visiveis.forEach((v) => { if (v.paused) tocar(v); });
 ["touchstart", "pointerdown", "scroll"].forEach((t) => window.addEventListener(t, destravar, { passive: true, once: true }));
-const ultimo = new WeakMap();
+const recomecar = (v) => {
+try { v.currentTime = 0; } catch (_) { /* sem seek */ }
+tocar(v);
+};
+loops.forEach((v) => v.addEventListener("ended", () => { if (!pausado && v.dataset.carregado && visiveis.has(v)) recomecar(v); }));
+const ultimo = new WeakMap(), noFim = new WeakMap();
 setInterval(() => {
 if (pausado || doc.hidden) return;
 visiveis.forEach((v) => {
-if (!v.dataset.carregado || v.ended) return;
-const t = v.currentTime, antes = ultimo.get(v);
+if (!v.dataset.carregado) return;
+const t = v.currentTime, antes = ultimo.get(v), dur = v.duration;
 ultimo.set(v, t);
+const parouNoFim = v.ended || (dur > 0 && t >= dur - 0.3 && antes !== undefined && Math.abs(t - antes) < 0.01);
+if (parouNoFim) {
+const n = (noFim.get(v) || 0) + 1;
+noFim.set(v, n);
+if (n >= 2) { noFim.set(v, 0); v.load(); tocar(v); } else recomecar(v);
+return;
+}
+noFim.set(v, 0);
 if (v.paused) { tocar(v); return; }
 if (antes !== undefined && Math.abs(t - antes) < 0.01 && v.readyState >= 2) {
 try { v.currentTime = t + 0.05; } catch (_) { /* sem seek */ }
