@@ -1050,6 +1050,7 @@ transition: transform .3s var(--ease), box-shadow .3s;
 .hero__video .loop { background: transparent; }
 .hero__video .loop picture, .hero__video .loop img, .hero__video .loop video { z-index: auto; }
 .album-pagina { background: var(--paper); }
+body.album-pagina::after { display: none; }
 .album-mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-soft); }
 .album-capa { position: relative; min-height: min(100svh, 980px); display: grid; align-items: end; color: var(--on-dark); background: var(--ink); isolation: isolate; overflow: clip; }
 .album-capa__foto { position: absolute; inset: 0; z-index: -1; }
