@@ -1049,3 +1049,61 @@ transition: transform .3s var(--ease), box-shadow .3s;
 @media (max-width: 760px) { .hero__triptico { grid-template-columns: 1fr; } .hero__triptico .loop:not(:nth-child(2)) { display: none; } }
 .hero__video .loop { background: transparent; }
 .hero__video .loop picture, .hero__video .loop img, .hero__video .loop video { z-index: auto; }
+.album-pagina { background: var(--paper); }
+.album-mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-soft); }
+.album-capa { position: relative; min-height: min(100svh, 980px); display: grid; align-items: end; color: var(--on-dark); background: var(--ink); isolation: isolate; overflow: clip; }
+.album-capa__foto { position: absolute; inset: 0; z-index: -1; }
+.album-capa__foto picture, .album-capa__foto img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 40%); }
+.album-capa__foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(43, 12, 18, .15) 30%, rgba(43, 12, 18, .82) 100%); }
+.album-capa__texto { padding-block: 140px clamp(48px, 8vw, 96px); display: grid; gap: 18px; }
+.album-capa .album-mono { color: #d9b77a; }
+.album-titulo { font-family: var(--font-serif); font-weight: 600; font-size: clamp(2.6rem, 7vw, 5.6rem); line-height: 1; letter-spacing: -.02em; max-width: 14ch; }
+.album-titulo em { font-style: italic; color: #e8cf9a; }
+.album-lead { font-size: clamp(1.02rem, 1.6vw, 1.22rem); max-width: 52ch; color: var(--on-dark-soft); }
+.album-sumario { padding-block: clamp(36px, 6vw, 64px); border-bottom: 1px solid var(--line); }
+.album-sumario ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px 28px; }
+.album-sumario a { display: flex; gap: 12px; align-items: baseline; text-decoration: none; font-family: var(--font-serif); font-size: 1.35rem; font-style: italic; color: var(--text); padding: 8px 0; border-top: 1px solid var(--line); }
+.album-sumario a span { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-style: normal; font-size: .72rem; color: #a8823f; }
+.album-sumario a:hover { color: var(--accent); }
+.album-cap { padding-block: clamp(64px, 10vw, 128px) 0; scroll-margin-top: 80px; }
+.album-cap__cabeca { display: grid; gap: 12px; justify-items: center; margin-bottom: clamp(36px, 6vw, 72px); }
+.album-cap__cabeca .album-mono { color: #a8823f; }
+.album-cap__cabeca .album-mono::before, .album-cap__cabeca .album-mono::after { content: ""; display: inline-block; width: 28px; height: 1px; background: currentColor; vertical-align: middle; margin-inline: 10px; opacity: .6; }
+.album-cap__titulo { font-family: var(--font-serif); font-style: italic; font-weight: 600; font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.05; color: var(--text); }
+.album-cap__texto { color: var(--text-soft); max-width: 48ch; font-size: 1.05rem; }
+.lamina { margin: 0 auto clamp(28px, 5vw, 64px); width: min(100% - 2 * var(--gutter), 1280px); }
+.lamina__fotos { display: grid; gap: clamp(8px, 1.4vw, 18px); }
+.lamina__foto { position: relative; overflow: hidden; background: var(--cream-2); }
+.lamina__foto picture, .lamina__foto img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); }
+.lamina figcaption { margin-top: 10px; text-align: right; }
+.lamina--inteira { width: min(100% - 2 * var(--gutter), 1440px); }
+.lamina--inteira .lamina__foto { aspect-ratio: 3 / 2; }
+.lamina--dupla .lamina__fotos { grid-template-columns: 1fr 1fr; }
+.lamina--dupla .lamina__foto { aspect-ratio: 2 / 3; }
+.lamina--tripla .lamina__fotos { grid-template-columns: repeat(3, 1fr); }
+.lamina--tripla .lamina__foto { aspect-ratio: 2 / 3; }
+.lamina--mista .lamina__fotos { grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; }
+.lamina--mista .lamina__foto:first-child { grid-row: span 2; }
+.lamina--mista .lamina__foto { aspect-ratio: auto; min-height: 0; }
+.lamina--mista .lamina__foto:first-child { aspect-ratio: 4 / 5; }
+.lamina--vertical { width: min(100% - 2 * var(--gutter), 760px); }
+.lamina--vertical .lamina__foto { aspect-ratio: 4 / 5; }
+.lamina--paisagens .lamina__fotos { grid-template-columns: 1fr 1fr; }
+.lamina--paisagens .lamina__foto { aspect-ratio: 3 / 2; }
+.album-fim { margin-top: clamp(64px, 10vw, 128px); }
+@media (max-width: 700px) {
+.lamina--tripla .lamina__fotos { grid-template-columns: 1fr 1fr; }
+.lamina--tripla .lamina__foto:first-child { grid-column: span 2; aspect-ratio: 3 / 2; }
+.lamina--mista .lamina__fotos { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+.lamina--mista .lamina__foto:first-child { grid-row: auto; grid-column: span 2; }
+.lamina--mista .lamina__foto { aspect-ratio: 4 / 5; }
+.lamina--paisagens .lamina__fotos { grid-template-columns: 1fr; }
+.lamina--inteira .lamina__foto { aspect-ratio: 4 / 5; }
+}
+.album-cap--escuro { background: var(--ink); color: var(--on-dark); padding-bottom: clamp(48px, 8vw, 96px); margin-top: clamp(64px, 10vw, 128px); }
+.album-cap--escuro .album-cap__titulo { color: var(--on-dark); }
+.album-cap--escuro .album-cap__texto, .album-cap--escuro .album-mono { color: var(--on-dark-soft); }
+.album-cap--escuro .album-cap__cabeca .album-mono { color: #d9b77a; }
+.album-cap--escuro .lamina__foto { background: #1a070b; box-shadow: 0 0 0 clamp(6px, 1vw, 12px) #f3ece0; }
+.album-cap--escuro .lamina__fotos { gap: clamp(20px, 3vw, 36px); }
+.album-cap--escuro + .album-fim { margin-top: 0; }
