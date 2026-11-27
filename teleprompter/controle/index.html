@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="color-scheme" content="light dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Controle">
+<title>Controle do prompter · Diapason</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+@font-face{font-family:'Montserrat';font-weight:400 800;font-display:swap;src:url(/fonts/montserrat-normal-400-800-latin.woff2) format('woff2')}
+@font-face{font-family:'Lato';font-weight:400;font-display:swap;src:url(/fonts/lato-normal-400-latin.woff2) format('woff2')}
+:root{--fundo:#F2F0E6;--texto:#0F3633;--suave:rgba(15,54,51,.68);--linha:rgba(15,54,51,.22);--botao:#e8e5d8;--acento:#E25A26}
+@media (prefers-color-scheme:dark){:root{--fundo:#0F3633;--texto:#F2F0E6;--suave:rgba(242,240,230,.7);--linha:rgba(242,240,230,.22);--botao:#16443f}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--fundo);color:var(--texto);font:400 17px/1.45 Lato,system-ui,sans-serif;min-height:100vh;min-height:100dvh;padding:16px 16px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.wrap{width:100%;max-width:520px;margin:0 auto;flex:1;display:flex;flex-direction:column}
+h1{font:800 20px/1.2 Montserrat,system-ui,sans-serif;margin:0 0 4px;letter-spacing:-.01em}
+p{margin:0 0 16px;color:var(--suave)}
+form{display:flex;gap:8px}
+input{flex:1;min-width:0;font:800 26px/1 Montserrat,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;padding:12px 14px;border:1px solid var(--linha);border-radius:12px;background:transparent;color:inherit;text-align:center}
+button{font:inherit;color:inherit;border:1px solid var(--linha);background:var(--botao);border-radius:14px;cursor:pointer}
+form button{padding:0 18px;font-size:17px}
+.status{display:flex;justify-content:space-between;font-size:14px;color:var(--suave);margin:14px 0 10px}
+.status b{font-weight:400;color:var(--texto)}
+.barra{height:6px;border-radius:3px;background:var(--linha);overflow:hidden;margin-bottom:16px}
+.barra i{display:block;height:100%;width:0;background:var(--texto);transition:width .4s}
+.grade{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1;align-content:start}
+.grade button{min-height:68px;font-size:18px}
+.grade .play{grid-column:1/-1;min-height:120px;font-size:24px;background:var(--acento);border-color:var(--acento);color:#fff}
+.vel{grid-column:1/-1;display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+.vel span{min-width:96px;text-align:center;font-size:15px;color:var(--suave)}
+.vel span b{display:block;font:800 28px/1.1 Montserrat,system-ui,sans-serif;color:var(--texto)}
+.sair{margin-top:14px;background:none;border:0;color:var(--suave);font-size:14px;text-decoration:underline;align-self:center;padding:8px}
+.modos{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.modos button{min-height:44px;font-size:16px;background:transparent}
+.modos button[aria-pressed="true"]{background:var(--texto);color:var(--fundo);border-color:var(--texto)}
+#fader{flex:1;display:flex;flex-direction:column;min-height:0}
+.fader-area{flex:1;display:grid;grid-template-columns:1fr 120px 1fr;gap:12px;min-height:300px;max-height:62vh}
+.escala{display:flex;flex-direction:column;justify-content:space-between;font-size:14px;color:var(--suave);text-align:right;padding:6px 0}
+.escala span:nth-child(2){color:var(--texto)}
+.trilho{position:relative;border:1px solid var(--linha);border-radius:16px;background:var(--botao);touch-action:none;cursor:ns-resize}
+.trilho .meio{position:absolute;left:10px;right:10px;top:50%;height:2px;margin-top:-1px;background:var(--texto);opacity:.5}
+.trilho .cursor{position:absolute;left:8px;right:8px;height:54px;margin-top:-27px;top:50%;border-radius:12px;background:var(--acento);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.leitura-fader{display:flex;flex-direction:column;justify-content:center;font-size:15px;color:var(--suave)}
+.leitura-fader b{font:800 24px/1.15 Montserrat,system-ui,sans-serif;color:var(--texto)}
+.trilho .cursor::after{content:"";position:absolute;left:30%;right:30%;top:50%;height:2px;margin-top:-1px;background:rgba(255,255,255,.8)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section id="entrar">
+    <h1>Controle do prompter</h1>
+    <p>Digite o código que aparece no painel do prompter.</p>
+    <form id="form"><input id="codigo" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text" aria-label="Código da sala" placeholder="····"><button type="submit">Conectar</button></form>
+  </section>
+
+  <section id="painel" hidden style="flex:1;display:flex;flex-direction:column">
+    <h1 id="titulo">Sala</h1>
+    <div class="status"><span id="conexao">Conectando…</span><b id="tempo"></b></div>
+    <div class="barra"><i id="progresso"></i></div>
+    <div class="modos" role="group" aria-label="Modo"><button data-modo="auto" aria-pressed="true">Automático</button><button data-modo="fader" aria-pressed="false">Fader</button></div>
+    <div id="fader" hidden>
+      <div class="fader-area">
+        <div class="escala"><span>mais rápido ↑</span><span>parado</span><span>volta ↓</span></div>
+        <div class="trilho" id="trilho" aria-label="Fader de velocidade" role="slider" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0"><div class="meio"></div><div class="cursor" id="cursor"></div></div>
+        <div class="leitura-fader"><b id="fader-v">Parado</b><span>Fica onde o dedo deixar. No meio, para.</span></div>
+      </div>
+    </div>
+    <div class="grade" id="auto">
+      <button class="play" id="c-alternar" data-cmd="alternar">Play</button>
+      <button data-cmd="voltar">↑ Voltar</button>
+      <button data-cmd="avancar">↓ Avançar</button>
+      <div class="vel"><button data-cmd="menos" aria-label="Mais devagar">− Devagar</button><span>Velocidade<b id="vel">20</b></span><button data-cmd="mais" aria-label="Mais rápido">+ Rápido</button></div>
+      <button data-cmd="inicio" style="grid-column:1/-1">Ir ao início</button>
+    </div>
+    <button class="sair" id="trocar">Trocar de sala</button>
+  </section>
+</div>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  function pegar(k) { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } }
+  function guardar(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function mmss(s) { s = Math.max(0, Math.round(s || 0)); return ("0" + Math.floor(s / 60)).slice(-2) + ":" + ("0" + (s % 60)).slice(-2); }
+  var ws = null, sala = "", espera = 1000, ativo = false, trava = null;
+
+  function limpar(v) { return (v || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 4); }
+  var q = new URLSearchParams(location.search).get("sala");
+  $("codigo").value = limpar(q || pegar("tp.controle.sala"));
+  $("codigo").addEventListener("input", function () { this.value = limpar(this.value); });
+
+  function conexao(t) { $("conexao").textContent = t; }
+  function conectar() {
+    if (!ativo) return;
+    ws = new WebSocket((location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/teleprompter/sala/" + sala + "?papel=controle");
+    ws.onopen = function () { espera = 1000; conexao("Conectado. Procurando o prompter…"); ws.send(JSON.stringify({ tipo: "cmd", cmd: "estado" })); };
+    ws.onmessage = function (ev) {
+      if (ev.data === "pong") return;
+      var m; try { m = JSON.parse(ev.data); } catch (e) { return; }
+      if (m.tipo === "presenca") conexao(m.prompter ? "Prompter conectado" : "Prompter não está na sala");
+      if (m.tipo === "estado") {
+        conexao("Prompter conectado");
+        $("c-alternar").textContent = m.contando ? "Contando… (toque para parar)" : (m.tocando ? "Pausa" : "Play");
+        $("vel").textContent = m.vel;
+        if (!m.fader && fv !== 0 && !arrastando && m.tocando) { fv = 0; desenharFader(); }
+        $("progresso").style.width = Math.round((m.progresso || 0) * 100) + "%";
+        $("tempo").textContent = mmss(m.crono);
+        if (m.titulo) $("titulo").textContent = m.titulo;
+      }
+    };
+    ws.onclose = function (ev) {
+      ws = null; if (!ativo) return;
+      conexao("Sem conexão. Tentando de novo…");
+      setTimeout(conectar, espera); espera = Math.min(espera * 2, 10000);
+    };
+  }
+  function entrar(codigo) {
+    sala = codigo; guardar("tp.controle.sala", sala); ativo = true;
+    $("entrar").hidden = true; $("painel").hidden = false; $("titulo").textContent = "Sala " + sala;
+    conectar(); acordar();
+  }
+  function acordar() { if ("wakeLock" in navigator && (!trava || trava.released)) navigator.wakeLock.request("screen").then(function (t) { trava = t; }).catch(function () {}); }
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible" && ativo) { acordar(); if (!ws) conectar(); }
+  });
+  $("form").addEventListener("submit", function (e) { e.preventDefault(); var c = limpar($("codigo").value); if (c.length === 4) entrar(c); });
+  document.querySelectorAll("[data-cmd]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      if (ws && ws.readyState === 1) ws.send(JSON.stringify({ tipo: "cmd", cmd: b.getAttribute("data-cmd") }));
+      if (navigator.vibrate) navigator.vibrate(15);
+    });
+  });
+  $("trocar").onclick = function () { ativo = false; if (ws) ws.close(); $("painel").hidden = true; $("entrar").hidden = false; $("codigo").focus(); };
+  setInterval(function () { if (ws && ws.readyState === 1) ws.send("ping"); }, 30000);
+
+  /* ---------- fader (pitch de DJ): meio para, acima avança cada vez mais rápido, abaixo volta ---------- */
+  var fv = 0, ultimo = 0, pendente = null;
+  function enviarFader(forcar) {
+    var agora = Date.now();
+    if (!forcar && agora - ultimo < 90) { clearTimeout(pendente); pendente = setTimeout(function () { enviarFader(true); }, 90); return; }
+    ultimo = agora;
+    if (ws && ws.readyState === 1) ws.send(JSON.stringify({ tipo: "cmd", cmd: "fader", v: Math.round(fv * 1000) / 1000 }));
+  }
+  function desenharFader() {
+    var t = $("trilho"), c = $("cursor"), h = t.clientHeight, ch = c.offsetHeight;
+    c.style.top = (ch / 2 + (1 - fv) / 2 * (h - ch)) + "px";
+    t.setAttribute("aria-valuenow", Math.round(fv * 100));
+    $("fader-v").textContent = fv === 0 ? "Parado" : (fv > 0 ? "Avança " : "Volta ") + Math.round(Math.abs(fv) * 100) + "%";
+  }
+  function moverFader(e) {
+    var t = $("trilho"), r = t.getBoundingClientRect(), ch = $("cursor").offsetHeight;
+    var v = 1 - 2 * (e.clientY - r.top - ch / 2) / (r.height - ch);
+    v = Math.max(-1, Math.min(1, v));
+    if (Math.abs(v) < 0.08) v = 0; // trinco suave no meio
+    if (v !== fv) { var cruzou = (v === 0) !== (fv === 0); fv = v; desenharFader(); enviarFader(); if (cruzou && navigator.vibrate) navigator.vibrate(10); }
+  }
+  var arrastando = false;
+  $("trilho").addEventListener("pointerdown", function (e) { arrastando = true; this.setPointerCapture(e.pointerId); moverFader(e); });
+  $("trilho").addEventListener("pointermove", function (e) { if (arrastando) moverFader(e); });
+  $("trilho").addEventListener("pointerup", function () { arrastando = false; enviarFader(true); });
+  $("trilho").addEventListener("pointercancel", function () { arrastando = false; });
+  setInterval(function () { if (fv !== 0) enviarFader(true); }, 1000); // o prompter para sozinho se o celular sumir
+  function modo(m) {
+    document.querySelectorAll("[data-modo]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-modo") === m)); });
+    $("fader").hidden = m !== "fader"; $("auto").hidden = m === "fader";
+    if (m !== "fader" && fv !== 0) { fv = 0; enviarFader(true); }
+    try { localStorage.setItem("tp.controle.modo", m); } catch (e) {}
+    if (m === "fader") requestAnimationFrame(desenharFader);
+  }
+  document.querySelectorAll("[data-modo]").forEach(function (b) { b.addEventListener("click", function () { modo(b.getAttribute("data-modo")); }); });
+  window.addEventListener("resize", desenharFader);
+  modo(pegar("tp.controle.modo") === "fader" ? "fader" : "auto");
+  if (q && limpar(q).length === 4) entrar(limpar(q));
+})();
+</script>
+</body>
+</html>

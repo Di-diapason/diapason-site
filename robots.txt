@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /teleprompter/
+Disallow: /notas/
+Disallow: /api/
 
 Sitemap: https://diapason.com.br/sitemap.xml
