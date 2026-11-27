@@ -11,7 +11,8 @@
 <meta name="apple-mobile-web-app-title" content="Prompter">
 <title>Teleprompter · Diapason</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="/teleprompter/icones/icone-180.png">
+<link rel="manifest" href="/teleprompter/manifest.webmanifest">
 <style>
 @font-face{font-family:'Montserrat';font-weight:400 800;font-display:swap;src:url(/fonts/montserrat-normal-400-800-latin.woff2) format('woff2')}
 @font-face{font-family:'Lato';font-weight:400;font-display:swap;src:url(/fonts/lato-normal-400-latin.woff2) format('woff2')}
@@ -34,8 +35,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 #texto p{margin:0 0 .55em}
 body.webcam #texto{max-width:var(--coluna);margin:0 auto;padding-left:16px;padding-right:16px}
 body.webcam #apaga-baixo{background:rgba(0,0,0,.72)}
-#segura{position:fixed;top:12px;left:50%;transform:translateX(-50%);font-size:13px;letter-spacing:.08em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 12px;pointer-events:none;opacity:0;transition:opacity .15s}
-body.segurando #segura{opacity:1}
+#segura,#arrasta{position:fixed;top:12px;left:50%;transform:translateX(-50%);font-size:13px;letter-spacing:.08em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 12px;pointer-events:none;opacity:0;transition:opacity .15s}
+body.segurando #segura,body.arrastando #arrasta{opacity:1}
+body.arrastando #palco{cursor:grabbing}
 .qr{width:168px;height:168px;background:#fff;border-radius:8px;padding:6px;margin-top:10px}
 .qr svg{display:block;width:100%;height:100%}
 #lista select,#edita select{font-size:15px;padding:8px 10px;border:1px solid var(--linha);border-radius:10px;background:rgba(0,0,0,.15);color:var(--creme);max-width:100%}
@@ -130,8 +132,9 @@ input[type=range]{width:100%;accent-color:var(--creme);height:28px;margin:0}
 </div>
 <div id="contagem" aria-live="assertive"><span></span></div>
 <div id="segura" aria-hidden="true">SEGURANDO</div>
+<div id="arrasta" class="selo" aria-hidden="true">ARRASTANDO</div>
 <div id="canto"></div>
-<div id="dica">Toque para ajustes · Espaço: play</div>
+<div id="dica">Toque: ajustes · Segure: pausa · Arraste: move o texto</div>
 
 <aside id="painel" aria-label="Ajustes do prompter">
   <div class="cab"><h2>Prompter</h2><button class="fechar" id="fechar" aria-label="Fechar ajustes">×</button></div>
@@ -206,6 +209,11 @@ input[type=range]{width:100%;accent-color:var(--creme);height:28px;margin:0}
     <div style="margin-top:8px">Ou, com a senha, abra <b id="i-url"></b> e digite o código.</div>
     <div class="pequeno" style="margin-top:8px">Clicker ou pedal: Page Down e Page Up (ou setas) voltam e avançam; espaço dá play e pausa; + e − mudam a velocidade.</div>
     <div class="pequeno" id="i-wake" style="margin-top:6px"></div>
+  </div>
+  <div class="bloco info" id="bloco-offline">
+    <div class="rotulo" style="margin-bottom:4px"><span>Sem internet</span><b id="i-rede">com internet</b></div>
+    <div class="pequeno" id="i-instalar">Instale e use sem rede: no iPhone ou iPad, Safari → Compartilhar → Adicionar à Tela de Início; no Android, Chrome → Instalar app. Abra o ícone uma vez com internet (e a senha, se pedir).</div>
+    <div class="pequeno" style="margin-top:6px">Sem rede funcionam o prompter, os roteiros salvos neste aparelho, toque, arraste e teclado, clicker ou pedal Bluetooth. Precisam de internet o controle pelo celular e o QR.</div>
   </div>
 </aside>
 
@@ -408,27 +416,49 @@ input[type=range]{width:100%;accent-color:var(--creme);height:28px;margin:0}
   }
   function abrirPainel() { painel.classList.add("ver"); document.body.classList.add("painel-aberto"); setTimeout(reajustar, 280); atualizarQR(); clearInterval(qrTimer); qrTimer = setInterval(atualizarQR, 240000); }
   function fecharPainel() { clearInterval(qrTimer); if (!painel.classList.contains("ver")) return; painel.classList.remove("ver"); document.body.classList.remove("painel-aberto"); setTimeout(reajustar, 280); }
-  // toque curto: painel. Tocar e segurar (dedo ou mouse): pausa enquanto segura e volta na mesma velocidade ao soltar.
-  var toque = null, ignorarClique = false;
+  // toque curto: painel. Tocar e segurar parado: pausa enquanto segura.
+  // Encostar e arrastar (dedo ou mouse): o texto acompanha o dedo; ao soltar, a rolagem segue dali na mesma velocidade.
+  var toque = null, ignorarAte = 0, arrastando = false; // clique logo depois de arrastar/segurar não abre o painel
+  function sentidoY() { return cfg.espV ? -1 : 1; }
   palco.addEventListener("pointerdown", function (e) {
     if (e.button > 0) return;
-    toque = { x: e.clientX, y: e.clientY };
-    toque.timer = setTimeout(function () { if (toque) { segurando = true; document.body.classList.add("segurando"); } }, 280);
+    toque = { x: e.clientX, y: e.clientY, pos: pos, id: e.pointerId };
+    toque.timer = setTimeout(function () { if (toque && !arrastando) { segurando = true; document.body.classList.add("segurando"); } }, 280);
   });
   window.addEventListener("pointermove", function (e) {
-    if (!toque || segurando) return;
-    if (Math.abs(e.clientX - toque.x) > 12 || Math.abs(e.clientY - toque.y) > 12) { clearTimeout(toque.timer); toque = null; ignorarClique = true; }
+    if (!toque || e.pointerId !== toque.id) return;
+    var dy = e.clientY - toque.y;
+    if (!arrastando && Math.abs(dy) > 8 && Math.abs(dy) >= Math.abs(e.clientX - toque.x)) {
+      clearTimeout(toque.timer); arrastando = true; segurando = true; alvo = null;
+      toque.y = e.clientY; toque.pos = pos; dy = 0;
+      document.body.classList.remove("segurando"); document.body.classList.add("arrastando");
+      try { palco.setPointerCapture(e.pointerId); } catch (x) {}
+    } else if (!arrastando && !segurando && Math.abs(e.clientX - toque.x) > 12) {
+      clearTimeout(toque.timer); toque = null; ignorarAte = Date.now() + 400; return;
+    }
+    if (arrastando) {
+      pos = Math.max(0, Math.min(maxPos, toque.pos - dy * sentidoY())); pintar();
+      e.preventDefault();
+    }
   });
   function soltar() {
     if (toque) clearTimeout(toque.timer);
-    if (segurando) { segurando = false; ignorarClique = true; document.body.classList.remove("segurando"); }
-    toque = null;
+    if (segurando || arrastando) { ignorarAte = Date.now() + 400; enviarEstado(); }
+    segurando = false; arrastando = false; toque = null;
+    document.body.classList.remove("segurando"); document.body.classList.remove("arrastando");
   }
   window.addEventListener("pointerup", soltar);
   window.addEventListener("pointercancel", soltar);
+  // roda do mouse e trackpad: movem o texto do mesmo jeito; a rolagem continua de onde parou
+  palco.addEventListener("wheel", function (e) {
+    if (painel.classList.contains("ver") && e.clientX > palco.getBoundingClientRect().left + palco.clientWidth) return;
+    e.preventDefault(); alvo = null;
+    var d = e.deltaY * (e.deltaMode === 1 ? alturaLinha() : e.deltaMode === 2 ? palco.clientHeight : 1);
+    pos = Math.max(0, Math.min(maxPos, pos + d * sentidoY())); pintar();
+  }, { passive: false });
   palco.addEventListener("contextmenu", function (e) { e.preventDefault(); });
   palco.addEventListener("click", function () {
-    if (ignorarClique) { ignorarClique = false; return; }
+    if (Date.now() < ignorarAte) { ignorarAte = 0; return; }
     if (painel.classList.contains("ver")) fecharPainel(); else abrirPainel();
   });
   $("fechar").onclick = fecharPainel;
@@ -614,6 +644,12 @@ input[type=range]{width:100%;accent-color:var(--creme);height:28px;margin:0}
   }
   function reconectar() { setTimeout(conectar, espera); espera = Math.min(espera * 2, 15000); }
   window.addEventListener("online", function () { if (!ws) { espera = 1000; conectar(); } });
+  function rede() {
+    $("i-rede").textContent = navigator.onLine === false ? "sem internet: prompter segue" : "com internet";
+    var instalado = (window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone;
+    if (instalado) $("i-instalar").textContent = "Instalado neste aparelho: abre e roda sem internet. Os roteiros ficam guardados no próprio app.";
+  }
+  window.addEventListener("online", rede); window.addEventListener("offline", rede); rede();
   setInterval(function () { if (ws && ws.readyState === 1) ws.send("ping"); }, 30000);
   function enviarEstado(forcar) {
     if (!ws || ws.readyState !== 1 || (!controles && !forcar)) return;
@@ -629,7 +665,7 @@ input[type=range]{width:100%;accent-color:var(--creme);height:28px;margin:0}
   requestAnimationFrame(quadro);
   conectar(); acordar();
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("/teleprompter/sw.js", { scope: "/teleprompter/" }).catch(function () {});
-  window.__tp = { cfg: cfg, estado: function () { return { pos: pos, maxPos: maxPos, tocando: tocando, contando: contando, sala: sala, controles: controles, segurando: segurando, fader: fader, webcam: !!cfg.webcam }; }, grupos: function () { return grupos; }, roteiros: function () { return roteiros; } };
+  window.__tp = { cfg: cfg, estado: function () { return { pos: pos, maxPos: maxPos, tocando: tocando, contando: contando, sala: sala, controles: controles, segurando: segurando, arrastando: arrastando, fader: fader, webcam: !!cfg.webcam }; }, grupos: function () { return grupos; }, roteiros: function () { return roteiros; } };
 })();
 </script>
 </body>

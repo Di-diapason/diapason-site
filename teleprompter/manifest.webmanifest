@@ -1,0 +1,19 @@
+{
+  "name": "Prompter Diapason",
+  "short_name": "Prompter",
+  "description": "Teleprompter da Diapason. Funciona sem internet depois de instalado.",
+  "id": "/teleprompter/",
+  "start_url": "/teleprompter/",
+  "scope": "/teleprompter/",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "any",
+  "background_color": "#000000",
+  "theme_color": "#0F3633",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "/teleprompter/icones/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/teleprompter/icones/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/teleprompter/icones/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
